@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cuestionario Estructura de Datos</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-content">
+      <p class="tag">EDD · Java · NetBeans</p>
+      <h1>Cuestionario de Estructura de Datos</h1>
+      <p class="subtitle">Práctica guiada con retroalimentación inmediata, respuestas correctas y explicación breve.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel" aria-labelledby="config-title">
+      <div class="panel-header">
+        <h2 id="config-title">Configurar práctica</h2>
+        <button id="shuffleBtn" class="ghost">Mezclar preguntas</button>
+      </div>
+      <div class="panel-body grid">
+        <div class="field">
+          <label for="topicSelect">Tema</label>
+          <select id="topicSelect">
+            <option value="all">Todos</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="countSelect">Cantidad</label>
+          <select id="countSelect">
+            <option value="all">Todas</option>
+            <option value="6">6</option>
+            <option value="10" selected>10</option>
+            <option value="14">14</option>
+            <option value="18">18</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="difficultySelect">Dificultad</label>
+          <select id="difficultySelect">
+            <option value="all">Todas</option>
+            <option value="basico">Básico</option>
+            <option value="medio" selected>Medio</option>
+            <option value="avanzado">Avanzado</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="quiz-title">
+      <div class="panel-header">
+        <h2 id="quiz-title">Preguntas</h2>
+        <div class="progress" aria-live="polite">
+          <span id="progressText">Pregunta 1 de 1</span>
+          <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <article id="questionCard" class="question"></article>
+        <div id="feedback" class="feedback" aria-live="polite"></div>
+        <div class="actions">
+          <button id="checkBtn" class="primary">Revisar respuesta</button>
+          <button id="nextBtn" class="secondary" disabled>Siguiente</button>
+          <button id="showBtn" class="ghost">Ver respuesta</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="summary-title" id="summary" hidden>
+      <div class="panel-header">
+        <h2 id="summary-title">Resumen</h2>
+        <button id="restartBtn" class="primary">Reiniciar práctica</button>
+      </div>
+      <div class="panel-body">
+        <div class="summary-grid">
+          <div>
+            <p class="label">Puntaje</p>
+            <p id="scoreText" class="score">0/0</p>
+          </div>
+          <div>
+            <p class="label">Fortalecer</p>
+            <ul id="weakTopics" class="weak-list"></ul>
+          </div>
+        </div>
+        <div>
+          <h3>Recomendaciones</h3>
+          <ul class="recommendations">
+            <li>Repite las preguntas donde fallaste y escribe el razonamiento antes de responder.</li>
+            <li>Implementa al menos una estructura por tema en Java (pila, cola, lista, árbol).</li>
+            <li>Practica el análisis de complejidad con ejemplos concretos.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Hecho para tu repaso de EDD. Cada respuesta tiene explicación y ejemplo.</p>
+  </footer>
+
+  <script src="questions.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+</html>
