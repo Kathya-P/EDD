@@ -1,0 +1,904 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cuestionario Estructura de Datos</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #1f2430;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-600: #1d4ed8;
+      --accent: #0ea5e9;
+      --border: #e5e7eb;
+      
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0f172a, #1e3a8a 70%, #1d4ed8);
+      color: #fff;
+      padding: 48px 16px 40px;
+    }
+
+    .hero-content {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .tag {
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.75rem;
+      color: #93c5fd;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      margin-top: 12px;
+      color: #e2e8f0;
+      max-width: 720px;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: -24px auto 48px;
+      padding: 0 16px;
+      display: grid;
+      gap: 20px;
+    }
+
+    .panel {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .panel-body {
+      padding: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .field label {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .field select {
+      margin-top: 8px;
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 0.95rem;
+    }
+
+    .question {
+      display: grid;
+      gap: 16px;
+    }
+
+    .question h3 {
+      font-size: 1.15rem;
+    }
+
+    .question .meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .code-block {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 16px;
+      border-radius: 12px;
+      font-family: "Fira Code", "Cascadia Code", monospace;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+    }
+
+    .options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .option:hover {
+      border-color: var(--accent);
+      background: #eff6ff;
+    }
+
+    .input-answer {
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      font-size: 1rem;
+    }
+
+    .progress {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--muted);
+    }
+
+    .progress-bar {
+      width: 140px;
+      height: 6px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+    }
+
+    .actions {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    button {
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .primary:hover {
+      background: var(--primary-600);
+    }
+
+    .secondary {
+      background: #e0e7ff;
+      color: #1e3a8a;
+    }
+
+    .ghost {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .feedback {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      display: none;
+    }
+
+    .feedback.success {
+      border-color: #bbf7d0;
+      background: #f0fdf4;
+      color: #166534;
+      display: block;
+    }
+
+    .feedback.error {
+      border-color: #fecaca;
+      background: #fef2f2;
+      color: #991b1b;
+      display: block;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      align-items: start;
+    }
+
+    .score {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .label {
+      color: var(--muted);
+    }
+
+    .weak-list {
+      list-style: disc;
+      margin-left: 18px;
+    }
+
+    .recommendations {
+      margin-top: 8px;
+      list-style: disc;
+      margin-left: 18px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px 12px 40px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 680px) {
+      .progress-bar {
+        width: 100px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-content">
+      <p class="tag">EDD · Java · NetBeans</p>
+      <h1>Cuestionario de Estructura de Datos</h1>
+      <p class="subtitle">Práctica guiada con retroalimentación inmediata, respuestas correctas y explicación breve.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel" aria-labelledby="quiz-title">
+      <div class="panel-header">
+        <h2 id="quiz-title">Preguntas</h2>
+        <div class="progress" aria-live="polite">
+          <span id="progressText">Pregunta 1 de 1</span>
+          <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <article id="questionCard" class="question"></article>
+        <div id="feedback" class="feedback" aria-live="polite"></div>
+        <div class="actions">
+          <button id="checkBtn" class="primary">Revisar respuesta</button>
+          <button id="nextBtn" class="secondary" disabled>Siguiente</button>
+          <button id="showBtn" class="ghost">Ver respuesta</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="summary-title" id="summary" hidden>
+      <div class="panel-header">
+        <h2 id="summary-title">Resumen</h2>
+        <button id="restartBtn" class="primary">Reiniciar práctica</button>
+      </div>
+      <div class="panel-body">
+        <div class="summary-grid">
+          <div>
+            <p class="label">Puntaje</p>
+            <p id="scoreText" class="score">0/0</p>
+          </div>
+          <div>
+            <p class="label">Fortalecer</p>
+            <ul id="weakTopics" class="weak-list"></ul>
+          </div>
+        </div>
+        <div>
+          <h3>Recomendaciones</h3>
+          <ul class="recommendations">
+            <li>Repite las preguntas donde fallaste y escribe el razonamiento antes de responder.</li>
+            <li>Implementa al menos una estructura por tema en Java (pila, cola, lista, árbol).</li>
+            <li>Practica el análisis de complejidad con ejemplos concretos.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Hecho para tu repaso de EDD. Cada respuesta tiene explicación y ejemplo.</p>
+  </footer>
+
+  <script>
+    window.QUESTION_BANK = [
+  // ============================================
+  // OPERADORES EN JAVA
+  // ============================================
+  {
+    id: 1,
+    topic: "Operadores Aritméticos",
+    difficulty: "basico",
+    type: "input",
+    prompt: "En Java, ¿cuál es el resultado de la división entera 7 / 4?",
+    answer: ["1"],
+    answerText: "1",
+    explanation: "La división entera en Java trunca la parte decimal. 7/4 = 1.75, pero como ambos son enteros, el resultado es 1.",
+    hint: "La división entera NO redondea, solo trunca la parte decimal."
+  },
+  {
+    id: 2,
+    topic: "Operadores Aritméticos",
+    difficulty: "basico",
+    type: "input",
+    prompt: "¿Cuál es el resultado de 17 % 5 en Java?",
+    answer: ["2"],
+    answerText: "2",
+    explanation: "El operador % (módulo o residuo) devuelve el residuo de la división. 17 = 3*5 + 2, por lo tanto 17 % 5 = 2.",
+    hint: "El operador % calcula el residuo de la división."
+  },
+  {
+    id: 3,
+    topic: "Operadores Aritméticos",
+    difficulty: "medio",
+    type: "mcq",
+    prompt: "¿Cuál es el resultado de la expresión: 7 % 4?",
+    choices: ["0", "1", "2", "3"],
+    answer: 3,
+    explanation: "7 dividido entre 4 es 1 con residuo 3. El operador % devuelve el residuo, por lo tanto 7 % 4 = 3.",
+    hint: "7 = 1*4 + 3"
+  },
+  {
+    id: 4,
+    topic: "Operadores Relacionales",
+    difficulty: "basico",
+    type: "input",
+    prompt: "En Java, ¿cuál es el operador relacional para 'no es igual'?",
+    answer: ["!="],
+    answerText: "!=",
+    explanation: "El operador de desigualdad en Java es != (no usar =, es comparación).",
+    hint: "Se usa el signo de exclamación con el igual."
+  },
+  {
+    id: 5,
+    topic: "Operadores Relacionales",
+    difficulty: "basico",
+    type: "truefalse",
+    prompt: "En Java, el operador == se utiliza para comparar si dos valores son iguales.",
+    choices: ["Verdadero", "Falso"],
+    answer: 0,
+    explanation: "El operador == (doble igual) se usa para comparación. El operador = (un solo igual) se usa para asignación.",
+    hint: "No confundir = (asignación) con == (comparación)."
+  },
+  {
+    id: 6,
+    topic: "Operadores de Asignación",
+    difficulty: "medio",
+    type: "mcq",
+    prompt: "Si int x = 10; y luego ejecutamos x += 5; ¿cuál es el valor final de x?",
+    choices: ["5", "10", "15", "50"],
+    answer: 2,
+    explanation: "El operador += es equivalente a x = x + 5. Por lo tanto, x = 10 + 5 = 15.",
+    hint: "x += 5 es lo mismo que x = x + 5."
+  },
+  {
+    id: 7,
+    topic: "Operadores de Asignación",
+    difficulty: "medio",
+    type: "input",
+    prompt: "¿Cuál es la forma simplificada de escribir la operación: algo = algo * 3?",
+    answer: ["algo *= 3", "algo*=3"],
+    answerText: "algo *= 3",
+    explanation: "Los operadores de asignación compuestos combinan una operación aritmética con la asignación. algo *= 3 es equivalente a algo = algo * 3.",
+    hint: "Se juntan el operador de multiplicación con el de asignación."
+  },
+  {
+    id: 8,
+    topic: "Jerarquía de Operadores",
+    difficulty: "basico",
+    type: "truefalse",
+    prompt: "El paréntesis ( ) es el único operador asociativo en Java y permite indicar en qué orden deben realizarse las operaciones.",
+    choices: ["Verdadero", "Falso"],
+    answer: 0,
+    explanation: "Los paréntesis tienen la mayor prioridad y permiten controlar el orden de evaluación de las operaciones.",
+    hint: "Los paréntesis se evalúan primero, como en matemáticas."
+  },
+  {
+    id: 9,
+    topic: "Jerarquía de Operadores",
+    difficulty: "medio",
+    type: "mcq",
+    prompt: "¿Qué operadores tienen el mismo nivel de precedencia en Java?",
+    choices: ["+ y -", "* y +", "/ y +", "+ y =="],
+    answer: 0,
+    explanation: "Los operadores de suma (+) y resta (-) tienen el mismo nivel de precedencia y se evalúan de izquierda a derecha.",
+    hint: "Los operadores aritméticos del mismo tipo tienen la misma prioridad."
+  },
+  {
+    id: 10,
+    topic: "Operadores Lógicos",
+    difficulty: "basico",
+    type: "mcq",
+    prompt: "¿Cuál es el operador lógico AND en Java?",
+    choices: ["&&", "&", "AND", "and"],
+    answer: 1,
+    explanation: "El operador lógico AND de bit es &. El operador && es el AND lógico con cortocircuito.",
+    hint: "Puede ser un solo ampersand o doble."
+  },
+
+  // ============================================
+  // CONDICIONALES EN JAVA
+  // ============================================
+  {
+    id: 11,
+    topic: "Estructuras Condicionales",
+    difficulty: "basico",
+    type: "mcq",
+    prompt: "¿Cuál es la estructura de control más básica en Java para tomar decisiones?",
+    choices: ["switch", "if-then", "for", "while"],
+    answer: 1,
+    explanation: "La estructura if-then es la sentencia de control de flujo más básica. Permite ejecutar código solo si una condición es verdadera.",
+    hint: "Es la estructura más simple, 'si esto, entonces haz aquello'."
+  },
+  {
+    id: 12,
+    topic: "Estructuras Condicionales",
+    difficulty: "basico",
+    type: "truefalse",
+    prompt: "La cláusula 'else' se ejecuta cuando la condición del 'if' es falsa.",
+    choices: ["Verdadero", "Falso"],
+    answer: 0,
+    explanation: "La cláusula else proporciona un camino de ejecución alternativo cuando la condición if es false.",
+    hint: "else = 'de lo contrario'."
+  },
+  {
+    id: 13,
+    topic: "Estructuras Condicionales",
+    difficulty: "medio",
+    type: "input",
+    prompt: "¿Qué imprime este código?\n\nint x = 15;\nif (x > 10) {\n    System.out.println(\"Mayor\");\n} else {\n    System.out.println(\"Menor\");\n}",
+    answer: ["Mayor", "mayor"],
+    answerText: "Mayor",
+    explanation: "Como x = 15 y 15 > 10, la condición es verdadera y se ejecuta el primer bloque imprimiendo 'Mayor'.",
+    hint: "Evalúa la condición: ¿15 es mayor que 10?"
+  },
+  {
+    id: 14,
+    topic: "Estructuras Condicionales",
+    difficulty: "medio",
+    type: "input",
+    prompt: "En la estructura else-if, ¿qué sucede cuando se encuentra la primera condición verdadera?",
+    answer: ["se detiene", "el programa se detiene", "deja de evaluar", "termina", "se ejecuta y termina"],
+    answerText: "El programa se detiene en la primera condición verdadera",
+    explanation: "En una cadena else-if, las condiciones se evalúan en orden y el programa se detiene en la primera que sea true.",
+    hint: "No se evalúan las demás condiciones después de encontrar una verdadera."
+  },
+  {
+    id: 15,
+    topic: "Estructuras Condicionales",
+    difficulty: "medio",
+    type: "input",
+    prompt: "¿Qué imprime este código?\n\nint nota = 85;\nif (nota >= 90) {\n    System.out.println(\"A\");\n} else if (nota >= 80) {\n    System.out.println(\"B\");\n} else {\n    System.out.println(\"C\");\n}",
+    answer: ["B", "b"],
+    answerText: "B",
+    explanation: "nota = 85, no cumple nota >= 90, pero SÍ cumple nota >= 80, por lo tanto imprime 'B' y se detiene.",
+    hint: "Se evalúa en orden: ¿85 >= 90? No. ¿85 >= 80? Sí."
+  },
+  {
+    id: 16,
+    topic: "Switch",
+    difficulty: "basico",
+    type: "truefalse",
+    prompt: "La estructura switch evalúa una sola variable contra una lista de valores específicos.",
+    choices: ["Verdadero", "Falso"],
+    answer: 0,
+    explanation: "Switch está diseñado para evaluar una variable contra múltiples valores constantes (cases).",
+    hint: "Es ideal para menús y selecciones con valores exactos."
+  },
+  {
+    id: 17,
+    topic: "Switch",
+    difficulty: "medio",
+    type: "input",
+    prompt: "En una estructura switch, ¿qué palabra clave se usa para detener la ejecución y salir del switch?",
+    answer: ["break"],
+    answerText: "break",
+    explanation: "La palabra clave 'break' detiene la ejecución del switch y evita que continúe ejecutando los siguientes cases.",
+    hint: "Sin esta palabra, el código seguiría ejecutando los demás cases."
+  },
+  {
+    id: 18,
+    topic: "Switch",
+    difficulty: "medio",
+    type: "input",
+    prompt: "¿Qué imprime este código?\n\nint dia = 3;\nswitch(dia) {\n    case 1: System.out.println(\"Lunes\"); break;\n    case 2: System.out.println(\"Martes\"); break;\n    case 3: System.out.println(\"Miércoles\"); break;\n    default: System.out.println(\"Otro\");\n}",
+    answer: ["Miércoles", "miércoles", "Miercoles", "miercoles"],
+    answerText: "Miércoles",
+    explanation: "El valor de dia es 3, por lo tanto entra al case 3 e imprime 'Miércoles', luego el break sale del switch.",
+    hint: "Busca el case que coincida con el valor 3."
+  },
+  {
+    id: 19,
+    topic: "Estructuras Condicionales",
+    difficulty: "basico",
+    type: "input",
+    prompt: "¿Qué cláusula del switch maneja valores no previstos o no coincidentes?",
+    answer: ["default"],
+    answerText: "default",
+    explanation: "La cláusula 'default' se ejecuta cuando ningún case coincide con el valor de la variable.",
+    hint: "Es como el 'else' del switch."
+  },
+  {
+    id: 20,
+    topic: "Condicionales vs Switch",
+    difficulty: "medio",
+    type: "mcq",
+    prompt: "¿Cuándo es más apropiado usar switch en lugar de if-else?",
+    choices: ["Para rangos numéricos", "Para valores discretos exactos", "Para condiciones complejas", "Para comparaciones múltiples"],
+    answer: 1,
+    explanation: "Switch es ideal para comparar una variable con valores exactos y discretos (menús, opciones específicas).",
+    hint: "Switch funciona mejor con valores concretos como 1, 2, 3 o 'A', 'B', 'C'."
+  },
+
+  // ============================================
+  // BUCLES EN JAVA
+  // ============================================
+  {
+    id: 21,
+    topic: "Bucle While",
+    difficulty: "basico",
+    type: "truefalse",
+    prompt: "El bucle while evalúa la condición ANTES de ejecutar el bloque de código.",
+    choices: ["Verdadero", "Falso"],
+    answer: 0,
+    explanation: "While es una estructura de pre-prueba. Primero evalúa la condición, y si es true, ejecuta el código.",
+    hint: "Es el 'guardián' que evalúa antes de dejar entrar."
+  },
+  {
+    id: 22,
+    topic: "Bucle Do-While",
+    difficulty: "basico",
+    type: "truefalse",
+    prompt: "El bucle do-while garantiza que el código se ejecute al menos una vez.",
+    choices: ["Verdadero", "Falso"],
+    answer: 0,
+    explanation: "Do-while es post-prueba: primero ejecuta el código, luego evalúa la condición. Por eso siempre se ejecuta al menos una vez.",
+    hint: "Primero actúa, luego verifica."
+  },
+  {
+    id: 23,
+    topic: "While vs Do-While",
+    difficulty: "medio",
+    type: "mcq",
+    prompt: "¿Cuál es la principal diferencia entre while y do-while?",
+    choices: ["While es más rápido", "Do-while evalúa la condición al final", "While no puede tener break", "Do-while no puede usar contadores"],
+    answer: 1,
+    explanation: "While evalúa arriba (puede no ejecutarse nunca). Do-while evalúa abajo (se ejecuta al menos una vez).",
+    hint: "La ubicación de la evaluación de la condición es diferente."
+  },
+  {
+    id: 24,
+    topic: "Bucle For",
+    difficulty: "basico",
+    type: "input",
+    prompt: "¿Qué tipo de bucle es ideal cuando se conoce el rango exacto de iteraciones?",
+    answer: ["for"],
+    answerText: "for",
+    explanation: "El bucle for es ideal para iterar sobre un rango conocido. Es compacto y centraliza inicialización, condición e incremento.",
+    hint: "Es el más compacto y usado para recorrer arreglos."
+  },
+  {
+    id: 25,
+    topic: "Bucle For",
+    difficulty: "medio",
+    type: "mcq",
+    prompt: "En un bucle for, ¿cuántas veces se ejecuta la inicialización?",
+    choices: ["Nunca", "Una vez", "En cada iteración", "Depende de la condición"],
+    answer: 1,
+    explanation: "La inicialización (ej: int i=1) se ejecuta una sola vez al comenzar el bucle.",
+    hint: "Solo se inicializa al inicio."
+  },
+  {
+    id: 26,
+    topic: "Bucles",
+    difficulty: "basico",
+    type: "input",
+    prompt: "Si int count = 1; while (count <= 3) { count++; }, ¿cuántas veces se ejecuta el bucle?",
+    answer: ["3", "tres"],
+    answerText: "3",
+    explanation: "El bucle se ejecuta cuando count vale 1, 2 y 3. Cuando count llega a 4, la condición (count <= 3) es false y termina.",
+    hint: "Cuenta: 1, 2, 3."
+  },
+  {
+    id: 27,
+    topic: "Bucles Infinitos",
+    difficulty: "basico",
+    type: "truefalse",
+    prompt: "Un bucle sin condición de salida (que nunca se vuelva false) se llama bucle infinito.",
+    choices: ["Verdadero", "Falso"],
+    answer: 0,
+    explanation: "Si la condición nunca se vuelve false, el bucle continuará ejecutándose indefinidamente (bucle infinito).",
+    hint: "Siempre debe haber una forma de que la condición sea false."
+  },
+  {
+    id: 28,
+    topic: "Uso de Bucles",
+    difficulty: "medio",
+    type: "mcq",
+    prompt: "Según el PDF, ¿qué tipo de bucle se recomienda para menús de usuario?",
+    choices: ["while", "for", "do-while", "for-each"],
+    answer: 2,
+    explanation: "Do-while es ideal para menús porque garantiza que se muestre al menos una vez antes de preguntar si continuar.",
+    hint: "El menú debe mostrarse al menos una vez."
+  },
+  {
+    id: 29,
+    topic: "Bucles Anidados",
+    difficulty: "medio",
+    type: "truefalse",
+    prompt: "Los bucles anidados son bucles dentro de otros bucles y se usan para procesar estructuras bidimensionales como matrices.",
+    choices: ["Verdadero", "Falso"],
+    answer: 0,
+    explanation: "Un bucle anidado es un bucle dentro de otro. Son útiles para matrices (un bucle para filas, otro para columnas).",
+    hint: "Bucle dentro de bucle = anidado."
+  },
+  {
+    id: 30,
+    topic: "Aplicación de Bucles",
+    difficulty: "medio",
+    type: "input",
+    prompt: "¿Qué bucle usarías para imprimir la tabla de multiplicar del 5 (del 5x1 al 5x10)?",
+    answer: ["for"],
+    answerText: "for",
+    explanation: "Como se conoce el rango exacto (del 1 al 10), el bucle for es la mejor opción: for(int i=1; i<=10; i++).",
+    hint: "Conoces exactamente cuántas veces repetir (10 veces)."
+  },
+
+  // ============================================
+  // ARREGLOS EN JAVA
+  // ============================================
+  {
+    id: 31,
+    topic: "Arreglos",
+    difficulty: "basico",
+    type: "truefalse",
+    prompt: "Un arreglo en Java es una secuencia de datos del mismo tipo.",
+    choices: ["Verdadero", "Falso"],
+    answer: 0,
+    explanation: "Un array agrupa varios elementos del mismo tipo de dato (int, double, String, etc.).",
+    hint: "Todos los elementos deben ser del mismo tipo."
+  },
+  {
+    id: 32,
+    topic: "Arreglos",
+    difficulty: "basico",
+    type: "input",
+    prompt: "En Java, los índices de un arreglo empiezan en ¿qué número?",
+    answer: ["0", "cero"],
+    answerText: "0",
+    explanation: "Los índices en Java siempre empiezan en 0. Si un arreglo tiene n elementos, los índices van de 0 a n-1.",
+    hint: "El primer elemento está en la posición 0."
+  },
+  {
+    id: 33,
+    topic: "Arreglos",
+    difficulty: "medio",
+    type: "mcq",
+    prompt: "Si se declara int[] edad = new int[5];
+
+    const questionCard = document.getElementById("questionCard");
+    const feedback = document.getElementById("feedback");
+    const progressText = document.getElementById("progressText");
+    const progressFill = document.getElementById("progressFill");
+    const checkBtn = document.getElementById("checkBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const showBtn = document.getElementById("showBtn");
+    const summary = document.getElementById("summary");
+    const scoreText = document.getElementById("scoreText");
+    const weakTopics = document.getElementById("weakTopics");
+    const restartBtn = document.getElementById("restartBtn");
+
+    const normalize = (value) => value.toString().trim().toLowerCase();
+
+    let pool = [...window.QUESTION_BANK];
+    let activeQuestions = [];
+    let currentIndex = 0;
+    let score = 0;
+    let answered = false;
+    let mistakes = {};
+
+    const shuffle = (array) => {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    };
+
+    const buildActiveQuestions = () => {
+      activeQuestions = [...pool];
+      currentIndex = 0;
+      score = 0;
+      answered = false;
+      mistakes = {};
+      summary.hidden = true;
+      renderQuestion();
+    };
+
+    const renderQuestion = () => {
+      const total = activeQuestions.length;
+      if (!total) return;
+
+      const question = activeQuestions[currentIndex];
+      answered = false;
+      nextBtn.disabled = true;
+      feedback.className = "feedback";
+      feedback.textContent = "";
+      feedback.style.display = "none";
+
+      progressText.textContent = `Pregunta ${currentIndex + 1} de ${total}`;
+      progressFill.style.width = `${((currentIndex + 1) / total) * 100}%`;
+
+      const meta = `<div class="meta"><span>${question.topic}</span><span>·</span><span>${question.difficulty}</span></div>`;
+      const codeBlock = question.code ? `<pre class="code-block">${question.code}</pre>` : "";
+
+      let inputBlock = "";
+      if (question.type === "mcq" || question.type === "truefalse") {
+        inputBlock = `<div class="options">${question.choices
+          .map(
+            (choice, index) => `
+          <label class="option">
+            <input type="radio" name="answer" value="${index}" />
+            <span>${choice}</span>
+          </label>`
+          )
+          .join("")}</div>`;
+      } else {
+        inputBlock = `<input class="input-answer" type="text" id="textAnswer" placeholder="Escribe tu respuesta" autocomplete="off" />`;
+      }
+
+      questionCard.innerHTML = `
+        ${meta}
+        <h3>${question.prompt}</h3>
+        ${codeBlock}
+        ${inputBlock}
+      `;
+    };
+
+    const getUserAnswer = () => {
+      const question = activeQuestions[currentIndex];
+      if (question.type === "mcq" || question.type === "truefalse") {
+        const selected = questionCard.querySelector("input[name='answer']:checked");
+        return selected ? Number(selected.value) : null;
+      }
+      const input = document.getElementById("textAnswer");
+      return input ? input.value : "";
+    };
+
+    const evaluateAnswer = (forceShow = false) => {
+      const question = activeQuestions[currentIndex];
+      const userAnswer = getUserAnswer();
+
+      if (!forceShow) {
+        if (question.type === "input" && !userAnswer.trim()) {
+          feedback.className = "feedback error";
+          feedback.textContent = "Escribe una respuesta antes de revisar.";
+          feedback.style.display = "block";
+          return;
+        }
+        if ((question.type === "mcq" || question.type === "truefalse") && userAnswer === null) {
+          feedback.className = "feedback error";
+          feedback.textContent = "Selecciona una opción antes de revisar.";
+          feedback.style.display = "block";
+          return;
+        }
+      }
+
+      let isCorrect = false;
+      if (!forceShow) {
+        if (question.type === "mcq" || question.type === "truefalse") {
+          isCorrect = userAnswer === question.answer;
+        } else {
+          const accepted = Array.isArray(question.answer) ? question.answer : [question.answer];
+          isCorrect = accepted.map(normalize).includes(normalize(userAnswer));
+        }
+      }
+
+      if (forceShow) isCorrect = false;
+
+      const correctText = question.type === "mcq" || question.type === "truefalse"
+        ? question.choices[question.answer]
+        : question.answerText || question.answer;
+
+      feedback.className = `feedback ${isCorrect ? "success" : "error"}`;
+      feedback.innerHTML = `
+        <strong>${isCorrect ? "¡Correcto!" : "Respuesta incorrecta"}</strong><br />
+        <span>Respuesta correcta: ${correctText}</span><br />
+        <small>${question.explanation}</small>
+      `;
+      feedback.style.display = "block";
+
+      if (!answered) {
+        if (isCorrect) score += 1;
+        else mistakes[question.topic] = (mistakes[question.topic] || 0) + 1;
+      }
+
+      answered = true;
+      nextBtn.disabled = false;
+    };
+
+    const goNext = () => {
+      if (currentIndex < activeQuestions.length - 1) {
+        currentIndex += 1;
+        renderQuestion();
+      } else {
+        showSummary();
+      }
+    };
+
+    const showSummary = () => {
+      summary.hidden = false;
+      scoreText.textContent = `${score}/${activeQuestions.length}`;
+      weakTopics.innerHTML = "";
+
+      const entries = Object.entries(mistakes);
+      if (!entries.length) {
+        weakTopics.innerHTML = "<li>Sin temas críticos. ¡Buen trabajo!</li>";
+      } else {
+        entries
+          .sort((a, b) => b[1] - a[1])
+          .forEach(([topic, count]) => {
+            const item = document.createElement("li");
+            item.textContent = `${topic} (errores: ${count})`;
+            weakTopics.appendChild(item);
+          });
+      }
+
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    };
+
+    checkBtn.addEventListener("click", () => evaluateAnswer(false));
+    showBtn.addEventListener("click", () => evaluateAnswer(true));
+    nextBtn.addEventListener("click", goNext);
+    restartBtn.addEventListener("click", buildActiveQuestions);
+
+    buildActiveQuestions();
+  </script>
+</body>
+</html>
